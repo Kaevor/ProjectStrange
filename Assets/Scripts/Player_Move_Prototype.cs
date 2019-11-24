@@ -9,10 +9,16 @@ public class Player_Move_Prototype : MonoBehaviour
     public int playerJumpPower = 1250;
     private float moveX;
     public bool isGrounded;
-    public bool touchingItem;
     public bool foundItem;
     public UnityEngine.Object item;
+    public int doubleJump = 0;
+    public int damage = 1;
 
+
+    private void Start()
+    {
+        foundItem = false;
+    }
 
     // Update is called once per frame
     void Update()
@@ -29,7 +35,7 @@ public class Player_Move_Prototype : MonoBehaviour
         {
             Jump();
         }
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Pickup") && foundItem)
         {
             Destroy(item);
             foundItem = false;
@@ -50,10 +56,11 @@ public class Player_Move_Prototype : MonoBehaviour
     void Jump()
     {
         //Jumping Code
-        if (isGrounded)
+        if (isGrounded || doubleJump > 1)
         {
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * playerJumpPower);
             isGrounded = false;
+            doubleJump -= 1;
         }
     }
 
@@ -68,14 +75,20 @@ public class Player_Move_Prototype : MonoBehaviour
 
     void OnTriggerEnter2D (Collider2D trig)
     {
-        foundItem = true;
-        item = trig.gameObject;
+        if (trig.gameObject.tag == "Item")
+        {
+            foundItem = true;
+            item = trig.gameObject;
+        }
     }
 
     void OnTriggerExit2D(Collider2D trig)
     {
-        foundItem = false;
-        item = null;
+        if (trig.gameObject.tag == "Item")
+        {
+            foundItem = false;
+            item = null;
+        }
     }
 
     void PlayerRayCast()
@@ -85,20 +98,17 @@ public class Player_Move_Prototype : MonoBehaviour
         RaycastHit2D dirRight = Physics2D.Raycast(transform.position, Vector2.right);
         RaycastHit2D dirLeft = Physics2D.Raycast(transform.position, Vector2.left);
         //if standing on enemy top you hop and destroy the enemy
-        if (dirDown.distance < 0.9f && dirDown.collider.tag == "Enemy")
+        if (dirDown.collider != null && dirDown.distance < 0.9f && dirDown.collider.tag == "Enemy")
         {
-            GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1000);
-            Destroy(dirDown.collider.gameObject);
+            GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1500);
+            dirDown.collider.gameObject.GetComponent<EnemyHealth>().Health -= damage;
         }
         //if touching something thats not an enemy then you can jump
-        if (dirDown.distance < 0.9f && dirDown.collider.tag != "Enemy")
+        if (dirDown.collider != null && dirDown.distance < 0.9f && dirDown.collider.tag != "Enemy")
         {
             isGrounded = true;
+            doubleJump = 2;
         }
-        //if standing on an item and you press "Fire1" you destroy/pick up the item
-        if (dirDown.distance < 0.9f && dirDown.collider.tag == "Item" && Input.GetButtonDown("Fire1"))
-        {
-            Destroy(dirDown.collider.gameObject);
-        }
+        
     }
 }

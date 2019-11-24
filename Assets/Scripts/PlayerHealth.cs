@@ -9,7 +9,7 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gameObject.transform.position.y < -7 || isHit == true)
+        if(gameObject.transform.position.y < -7)
         {
             Die();
         }
@@ -23,9 +23,6 @@ public class PlayerHealth : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Enemy")
-        {
-            isHit = true;
-        }
+
     }
 }

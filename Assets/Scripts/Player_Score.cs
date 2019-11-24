@@ -46,8 +46,6 @@ public class Player_Score : MonoBehaviour
         //Stops the counter and gives us our final score
         finished = true;
         playerScore = (topScore - (int)(timeTaken)) + playerScore;
-        Debug.Log("You have the score " + playerScore);
-
     }
 
 }
