@@ -9,15 +9,13 @@ public class Player_Move_Prototype : MonoBehaviour
     public int playerJumpPower = 1250;
     private float moveX;
     public bool isGrounded;
-    public bool foundItem;
-    public UnityEngine.Object item;
     public int doubleJump = 0;
     public int damage = 1;
 
 
     private void Start()
     {
-        foundItem = false;
+
     }
 
     // Update is called once per frame
@@ -35,11 +33,7 @@ public class Player_Move_Prototype : MonoBehaviour
         {
             Jump();
         }
-        if (Input.GetButtonDown("Pickup") && foundItem)
-        {
-            Destroy(item);
-            foundItem = false;
-        }
+
         //Animations
         //Player Direction
         if (moveX < 0.0f && facingRight == false)
@@ -71,24 +65,6 @@ public class Player_Move_Prototype : MonoBehaviour
         Vector2 localScale = gameObject.transform.localScale;
         localScale.x *= -1;
         transform.localScale = localScale;
-    }
-
-    void OnTriggerEnter2D (Collider2D trig)
-    {
-        if (trig.gameObject.tag == "Item")
-        {
-            foundItem = true;
-            item = trig.gameObject;
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D trig)
-    {
-        if (trig.gameObject.tag == "Item")
-        {
-            foundItem = false;
-            item = null;
-        }
     }
 
     void PlayerRayCast()

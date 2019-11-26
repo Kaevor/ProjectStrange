@@ -13,4 +13,5 @@ public class GameOverScreen : MonoBehaviour
             SceneManager.LoadScene("ProjectStrange");
         }
     }
+
 }

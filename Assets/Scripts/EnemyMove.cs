@@ -54,6 +54,6 @@ public class EnemyMove : MonoBehaviour
 
     void GameOver()
     {
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("GameOverScreen");
     }
 }

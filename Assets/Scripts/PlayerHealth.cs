@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public bool isHit = false;
     // Update is called once per frame
     void Update()
     {
@@ -18,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     { 
         //reset game
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("GameOverScreen");
     }
 
     void OnCollisionEnter2D(Collision2D col)

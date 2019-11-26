@@ -12,6 +12,8 @@ TagManager:
   - Play
   - Exit
   - Attack Animation
+  - Dialog
+  - Sign
   layers:
   - Default
   - TransparentFX
@@ -22,8 +24,8 @@ TagManager:
   - 
   - 
   - Enemy
-  - 
-  - 
+  - Background
+  - Player
   - 
   - 
   - 
