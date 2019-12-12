@@ -16,7 +16,8 @@ public class AttackScript : MonoBehaviour
     public float attackRange;
     //How much damage each attack does
     public int damage;
-    public GameObject attack;
+
+    public Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,6 @@ public class AttackScript : MonoBehaviour
     {
         if(timeBtwAttack <= 0 && Input.GetButtonDown("Attack"))
         {
-            attack.GetComponent<SpriteRenderer>().enabled = true;
             //circle hit box for attack
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
             //for loop to hit each enemy
@@ -39,11 +39,12 @@ public class AttackScript : MonoBehaviour
                 enemiesToDamage[i].GetComponent<EnemyHealth>().Health-= damage;
             }
             timeBtwAttack = startTimeBtwAttack;
+            anim.SetBool("IsAttacking", true);
         }
         else
         {
-            attack.GetComponent<SpriteRenderer>().enabled = false;
             timeBtwAttack -= Time.deltaTime;
+            anim.SetBool("IsAttacking", false);
         }
     }
 

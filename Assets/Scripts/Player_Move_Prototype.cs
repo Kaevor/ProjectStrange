@@ -9,7 +9,6 @@ public class Player_Move_Prototype : MonoBehaviour
     public int playerJumpPower = 1250;
     private float moveX;
     public bool isGrounded;
-    public int doubleJump = 0;
     public int damage = 1;
     public Animator animator;
 
@@ -31,7 +30,7 @@ public class Player_Move_Prototype : MonoBehaviour
         //Controls
         moveX = Input.GetAxis("Horizontal")*0.5f;
         animator.SetFloat("Speed", Mathf.Abs(moveX));
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             Jump();
         }
@@ -52,12 +51,7 @@ public class Player_Move_Prototype : MonoBehaviour
     void Jump()
     {
         //Jumping Code
-        if (isGrounded || doubleJump > 1)
-        {
-            GetComponent<Rigidbody2D>().AddForce(Vector2.up * playerJumpPower);
-            isGrounded = false;
-            doubleJump -= 1;
-        }
+        GetComponent<Rigidbody2D>().AddForce(Vector2.up * playerJumpPower);
     }
 
     void FlipPlayer()
@@ -81,12 +75,15 @@ public class Player_Move_Prototype : MonoBehaviour
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1500);
             dirDown.collider.gameObject.GetComponent<EnemyHealth>().Health -= damage;
         }
-        //if touching something thats not an enemy then you can jump
-        if (dirDown.collider != null && dirDown.distance < 0.9f && dirDown.collider.tag != "Enemy")
-        {
-            isGrounded = true;
-            doubleJump = 2;
-        }
-        
+    }
+
+    private void OnTriggerStay2D(Collider2D col)
+    {
+        isGrounded = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        isGrounded = false;
     }
 }
