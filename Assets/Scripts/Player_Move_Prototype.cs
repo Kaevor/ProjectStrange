@@ -11,6 +11,7 @@ public class Player_Move_Prototype : MonoBehaviour
     public bool isGrounded;
     public int doubleJump = 0;
     public int damage = 1;
+    public Animator animator;
 
 
     private void Start()
@@ -28,7 +29,8 @@ public class Player_Move_Prototype : MonoBehaviour
     void PlayerMove()
     {
         //Controls
-        moveX = Input.GetAxis("Horizontal");
+        moveX = Input.GetAxis("Horizontal")*0.5f;
+        animator.SetFloat("Speed", Mathf.Abs(moveX));
         if (Input.GetButtonDown("Jump"))
         {
             Jump();
